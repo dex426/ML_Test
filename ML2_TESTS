@@ -1,0 +1,93 @@
+# This file is for ML2 Unit Tests
+###########################################################
+
+# Questions 1-5: 
+If output is matched assume all is correct/
+
+############################################################
+# Question 8 
+
+Optimal solution found.
+[[5.00000003]
+ [5.00000002]] 6.875000051639771
+
+Output image has 4 lines
+############################################################
+
+# Note transpose is not needed due to single dimension
+# np.dot will auto transpose if its needed. 
+
+# Question 17 
+np.dot(x1, x2.T).astype(float)
+
+# Question 18
+((1 + np.dot(x1, x2.T).astype(float)) ** param).astype(float)
+############################################################
+
+
+#############################################################
+# Question 23
+
+# test func
+def padding_repeating2(M, length):
+    return np.pad(M, ((length,length),(length,length)),'edge')
+
+test = np.random.rand(1,8)
+np.mean(padding_repeating2(test,7) == padding_repeating(test,7)) == 1.0
+
+test = np.random.rand(5,5)
+np.mean(padding_repeating2(test,3) == padding_repeating(test,3)) == 1.0
+
+test = np.random.rand(2,7)
+np.mean(padding_repeating2(test,2) == padding_repeating(test,2)) == 1.0
+
+kk = np.random.rand(7,3)
+np.mean(padding_repeating2(kk,1) == padding_repeating(kk,1)) == 1.0
+
+#############################################################
+# Question 24
+
+k1 = np.ones((3,3))
+im1 = np.arange(25).reshape((5,5))
+
+cross_correlation2D(im1,k1,padding_repeating).sum() == 2700
+
+k1 = np.ones((5,5))
+im1 = np.arange(25).reshape((5,5))
+
+cross_correlation2D(im1,k1,padding_repeating).sum() == 7500
+
+##############################################################
+# Question 25
+# This one is more of a visual check
+# np.shape = z,x,y !
+
+
+test2 = np.ones((5,3,3))
+np.sum(padding_zeros_3D(test2,1)) == 45
+
+
+##############################################################
+# Question 26
+
+see final check
+
+##############################################################
+# Question 27 
+
+make_averaging_kernel(1, 5) == np.ones((1,5))/5
+make_averaging_kernel(2, 5) == np.ones((5,5))/5**2
+make_averaging_kernel(3, 5) == np.ones((5,5,5))/5**3
+
+################################################################
+# FINAL CHECK 
+
+from PIL import Image
+from scipy.signal import correlate
+kernel = make_averaging_kernel(n_dim=3, length=7)
+image = np.array(Image.open('fish.jpeg')).astype(int)
+correct = correlate(image,kernel,mode='same')
+out = cross_correlation3D(image, kernel, padding_zeros_3D)
+assert ((correct - out)<1e-3).all(), 'Incorrect solution'
+
+
