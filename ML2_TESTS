@@ -31,6 +31,20 @@ Optimal solution found.
 
 Output image has 4 lines
 ############################################################
+# Question 14 
+
+from sklearn.datasets import make_classification
+X,y = make_classification(n_samples=100, n_features=2, n_informative=2, n_redundant=0, n_repeated=0, n_classes=2, n_clusters_per_class=2, weights=None, flip_y=0.0, class_sep=1.0, random_state=5)
+y[y==0]=-1
+
+model = train_slmkc(X, y, C=1e2, kernel_function=linear_kernel_function, param=None)
+compute_bias(kernel_function=linear_kernel_function,param=None,C=1e2,model=model) - 2.57487613 <1e-5
+
+model = train_slmkc(X, y, C=1e3, kernel_function=polynomial_kernel_function, param=5)
+compute_bias(kernel_function=linear_kernel_function,param=None,C=1e2,model=model) - 0.25000002 <1e-5
+
+############################################################
+# Question 17/18
 
 # Note transpose is not needed due to single dimension
 # np.dot will auto transpose if its needed. 
@@ -40,6 +54,7 @@ np.dot(x1, x2.T).astype(float)
 
 # Question 18
 ((1 + np.dot(x1, x2.T).astype(float)) ** param).astype(float)
+
 ############################################################
 
 
